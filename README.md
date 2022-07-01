@@ -1,18 +1,12 @@
-# WebDisplays for Minecraft 1.12.2
-This is the WebDisplays mod for Minecraft 1.12.2. I don't have time to maintain it anymore, so I changed the license recently and anybody is welcome to create forks and/or re-distribute it. For more info see [LICENSE](LICENSE).
+# WebDisplays for Minecraft 1.12.2 (RadiatedExodus's fork)
+This is my personal fork of the popular [Webdisplays](https://github.com/montoyo/webdisplays) mod created by [montoyo](https://github.com/montoyo).
+
+### Notes
+- I do not have experience with Minecraft modding on both Forge or Fabric, so most of the modifications I've done may be incorrect or unefficient or just theres a better way to do it.
+- I have upgraded the Forge toolchain from the deprecated ForgeGradle to the newer one.
+- I do not know why, but when using the ``runClient`` provided by ``fg_runs``, mods resources are not included. In order to properly test the mod you have to run ``jar`` from ``build`` and copy ``build/reobfJar/output.jar`` into a ``mods`` folder from a Forge 1.12.2 installation (either via Minecraft Launcher, PolyMC, etc) and run it from there.
+- This should be compatible with both [MCEF provided by montoyo](https://montoyo.net/wd3/?modid=mcef) and [MCEF provided by ds58](https://github.com/ds58/mcef/releases). (Assuming nothing in the API changes)
+- The ComputerCraft API included is the [ComputerCraft: Tweaked](https://github.com/cc-tweaked/CC-Tweaked) version.
 
 ### Wiki
-* The Wiki that details all blocks/items can be found on my website https://montoyo.net/wdwiki/
-
-### Things before release
-* Release ready. Targeted release date: 17/02/2018.
-
-### Delayed things
-* Plugin API
-* The Shop
-* CC Interface, if CC gets updated...
-* Center camera to screen when using keyboard
-* minePad management: check GuiContainer.draggedStack for minePad
-* In-game command to add/remove blacklisted domains
-* Config: RPMP (Real pixels per Minecraft pixels)
-* Disable miniserv in solo
+* The Wiki that details all blocks/items can be found on montoyo's website: https://montoyo.net/wdwiki/
