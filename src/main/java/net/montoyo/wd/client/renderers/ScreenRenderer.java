@@ -8,8 +8,10 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.montoyo.wd.WebDisplays;
 import net.montoyo.wd.client.ClientProxy;
@@ -17,6 +19,7 @@ import net.montoyo.wd.entity.TileEntityScreen;
 import net.montoyo.wd.utilities.Vector3f;
 import net.montoyo.wd.utilities.Vector3i;
 
+import static net.minecraft.client.renderer.GlStateManager.resetColor;
 import static org.lwjgl.opengl.GL11.*;
 
 public class ScreenRenderer extends TileEntitySpecialRenderer<TileEntityScreen> {
@@ -24,6 +27,7 @@ public class ScreenRenderer extends TileEntitySpecialRenderer<TileEntityScreen> 
     private final Vector3f mid = new Vector3f();
     private final Vector3i tmpi = new Vector3i();
     private final Vector3f tmpf = new Vector3f();
+    private float light = 1f;
 
     @Override
     public void render(TileEntityScreen te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
@@ -32,7 +36,7 @@ public class ScreenRenderer extends TileEntitySpecialRenderer<TileEntityScreen> 
 
         //Disable lighting
         RenderHelper.disableStandardItemLighting();
-        setLightmapDisabled(true);
+        setLightmapDisabled(false);
         glEnable(GL_TEXTURE_2D);
         glDisable(GL_CULL_FACE);
         glDisable(GL_BLEND);
@@ -115,14 +119,26 @@ public class ScreenRenderer extends TileEntitySpecialRenderer<TileEntityScreen> 
                 sh = tmp;
             }
 
-            //TODO: Use tesselator
+            resetColor();
             glBindTexture(GL_TEXTURE_2D, scr.browser.getTextureID());
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit,240 * light, 240 * light);
+
+            BufferBuilder buffer = Tessellator.getInstance().getBuffer();
+            buffer.begin(GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+            buffer.pos(-sw, -sh, 0.505f).tex(0.f, 1.f).color(1.f, 1.f, 1.f, 1.f).endVertex();
+            buffer.pos( sw, -sh, 0.505f).tex(1.f, 1.f).color(1.f, 1.f, 1.f, 1.f).endVertex();
+            buffer.pos( sw,  sh, 0.505f).tex(1.f, 0.f).color(1.f, 1.f, 1.f, 1.f).endVertex();
+            buffer.pos(-sw,  sh, 0.505f).tex(0.f, 0.f).color(1.f, 1.f, 1.f, 1.f).endVertex();
+
+            Tessellator.getInstance().draw();
+            /*
             glBegin(GL_QUADS);
             glColor4f(1.f, 1.f, 1.f, 1.f); glTexCoord2f(0.f, 1.f); glVertex3f(-sw, -sh, 0.505f);
             glColor4f(1.f, 1.f, 1.f, 1.f); glTexCoord2f(1.f, 1.f); glVertex3f( sw, -sh, 0.505f);
             glColor4f(1.f, 1.f, 1.f, 1.f); glTexCoord2f(1.f, 0.f); glVertex3f( sw,  sh, 0.505f);
             glColor4f(1.f, 1.f, 1.f, 1.f); glTexCoord2f(0.f, 0.f); glVertex3f(-sw,  sh, 0.505f);
             glEnd();
+             */
             GlStateManager.bindTexture(0); //Minecraft does shit with mah texture otherwise...
             glPopMatrix();
         }
@@ -137,7 +153,7 @@ public class ScreenRenderer extends TileEntitySpecialRenderer<TileEntityScreen> 
 
         //Re-enable lighting
         RenderHelper.enableStandardItemLighting();
-        setLightmapDisabled(false);
+        setLightmapDisabled(true);
         glEnable(GL_CULL_FACE);
     }
 

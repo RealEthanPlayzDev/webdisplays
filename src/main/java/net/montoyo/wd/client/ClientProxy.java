@@ -337,7 +337,7 @@ public class ClientProxy extends SharedProxy implements ISelectiveResourceReload
         }
 
         SocketAddress saddr = mc.player.connection.getNetworkManager().channel().remoteAddress();
-        if(saddr == null || !(saddr instanceof InetSocketAddress)) {
+        if(!(saddr instanceof InetSocketAddress)) {
             Log.warning("Miniserv client: remote address is not inet, assuming local address");
             saddr = new InetSocketAddress("127.0.0.1", 1234);
         }
